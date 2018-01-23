@@ -346,13 +346,13 @@
               aria-label="Search for option"
       >
 
-      <button 
-        v-show="showClearButton" 
-        :disabled="disabled" 
+      <button
+        v-show="showClearButton"
+        :disabled="disabled"
         @click="clearSelection"
-        type="button" 
-        class="clear" 
-        title="Clear selection" 
+        type="button"
+        class="clear"
+        title="Clear selection"
       >
         <span aria-hidden="true">&times;</span>
       </button>
@@ -431,6 +431,15 @@
       maxHeight: {
         type: String,
         default: '400px'
+      },
+
+      /**
+       * Enable/Disable deselect the option by double select it
+       * @type {Boolean}
+       */
+      deselectOnSameValue: {
+        type: Boolean,
+        default: false
       },
 
       /**
@@ -760,7 +769,9 @@
        */
       select(option) {
         if (this.isOptionSelected(option)) {
-          this.deselect(option)
+          if (this.deselectOnSameValue) {
+            this.deselect(option)
+          }
         } else {
           if (this.taggable && !this.optionExists(option)) {
             option = this.createOption(option)
